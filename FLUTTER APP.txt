@@ -1,0 +1,220 @@
+make this same tip calculator in dart dont use any daraswables just this idea use and give me just the 
+folder strudte and classes code only to paste them
+
+yaml 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+dependencies:
+  intl: ^0.19.0
+
+
+
+
+Perfect 👍 You want the same Tip Calculator idea in Flutter (Dart).
+I’ll give you:
+
+Folder structure
+
+Main Dart files with code (no drawables, just simple Flutter widgets)
+
+📂 Folder Structure
+tip_calculator_flutter/
+│
+├── lib/
+│   ├── main.dart               # Entry point of app
+│   ├── screens/
+│   │     └── home_screen.dart  # UI + logic for Tip Calculator
+│   ├── widgets/
+│   │     ├── tip_input.dart    # Input field widget
+│   │     ├── tip_options.dart  # Radio buttons for % selection
+│   │     └── tip_result.dart   # Result text widget
+│   └── utils/
+│         └── calculator.dart   # Helper logic for calculating tips
+
+📝 Code for Each File
+lib/main.dart
+import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
+
+void main() {
+  runApp(const TipCalculatorApp());
+}
+
+class TipCalculatorApp extends StatelessWidget {
+  const TipCalculatorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Tip Calculator',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        useMaterial3: true,
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+lib/screens/home_screen.dart
+import 'package:flutter/material.dart';
+import '../utils/calculator.dart';
+import '../widgets/tip_input.dart';
+import '../widgets/tip_options.dart';
+import '../widgets/tip_result.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _controller = TextEditingController();
+  double _tip = 0.0;
+  double _tipPercent = 0.20; // default 20%
+  bool _roundUp = true;
+
+  void _calculateTip() {
+    final cost = double.tryParse(_controller.text);
+    if (cost == null || cost <= 0) {
+      setState(() => _tip = 0.0);
+      return;
+    }
+    setState(() {
+      _tip = calculateTip(cost, _tipPercent, _roundUp);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Tip Calculator")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TipInput(controller: _controller),
+            const SizedBox(height: 20),
+            const Text("How was the service?",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            TipOptions(
+              selectedPercent: _tipPercent,
+              onChanged: (value) {
+                setState(() => _tipPercent = value);
+              },
+            ),
+            SwitchListTile(
+              title: const Text("Round up tip"),
+              value: _roundUp,
+              onChanged: (val) => setState(() => _roundUp = val),
+            ),
+            ElevatedButton(
+              onPressed: _calculateTip,
+              child: const Text("Calculate"),
+            ),
+            const SizedBox(height: 16),
+            TipResult(tip: _tip),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+lib/widgets/tip_input.dart
+import 'package:flutter/material.dart';
+
+class TipInput extends StatelessWidget {
+  final TextEditingController controller;
+  const TipInput({super.key, required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        labelText: "Cost of Service",
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+}
+
+lib/widgets/tip_options.dart
+import 'package:flutter/material.dart';
+
+class TipOptions extends StatelessWidget {
+  final double selectedPercent;
+  final ValueChanged<double> onChanged;
+
+  const TipOptions({
+    super.key,
+    required this.selectedPercent,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        RadioListTile<double>(
+          title: const Text("Amazing (20%)"),
+          value: 0.20,
+          groupValue: selectedPercent,
+          onChanged: onChanged,
+        ),
+        RadioListTile<double>(
+          title: const Text("Good (18%)"),
+          value: 0.18,
+          groupValue: selectedPercent,
+          onChanged: onChanged,
+        ),
+        RadioListTile<double>(
+          title: const Text("Okay (15%)"),
+          value: 0.15,
+          groupValue: selectedPercent,
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+lib/widgets/tip_result.dart
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+class TipResult extends StatelessWidget {
+  final double tip;
+  const TipResult({super.key, required this.tip});
+
+  @override
+  Widget build(BuildContext context) {
+    final formatted = NumberFormat.currency(symbol: "\$").format(tip);
+    return Text(
+      "Tip Amount: $formatted",
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    );
+  }
+}
+
+lib/utils/calculator.dart
+double calculateTip(double cost, double percent, bool roundUp) {
+  double tip = cost * percent;
+  if (roundUp) {
+    tip = tip.ceilToDouble();
+  }
+  return tip;
+}
+
+
+✅ That’s it! This gives you a clean, structured Flutter version of your Tip Calculator app.
+Just copy these files into your Flutter project and run.
+
+Do you also want me to give you the pubspec.yaml dependencies (like intl) to paste directly?
