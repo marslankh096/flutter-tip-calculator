@@ -1,1 +1,1 @@
-![Image 1](f_and.jpeg) 
+![Image 1](f_and.png) 
